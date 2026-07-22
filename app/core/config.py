@@ -10,11 +10,11 @@ class Settings(BaseSettings):
 
     # usar validation_alias com o nome da variável do arquivo .env
     # permite trocar o nome da variável no class Settings
-    token_exp: int = Field(default=..., validation_alias="access_token_expire_minutes")
+    access_token_expire_minutes: int = Field(default=...)
 
     # Nova sintaxe do Pydantic v2 para carregar o arquivo .env
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(".env", "../.env"),
         env_file_encoding="utf-8",
     )
 

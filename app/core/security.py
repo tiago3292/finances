@@ -4,8 +4,8 @@ import jwt
 from jwt.exceptions import InvalidTokenError
 from fastapi import HTTPException
 
-from config import settings
-from ..schemas.token import TokenData
+from app.core.config import settings
+from app.schemas.token import TokenData
 
 password_hash = PasswordHash.recommended()
 DUMMY_HASH = password_hash.hash("dummypwd")
