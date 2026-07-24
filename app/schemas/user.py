@@ -12,8 +12,8 @@ class UserResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 class UserInDB(BaseModel):
-    id: int
+    #id: int
     username: str
-    email: EmailStr
+    #email: EmailStr
     hashed_password: str
     model_config = {"from_attributes": True}

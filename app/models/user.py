@@ -9,3 +9,4 @@ class User(Base):
     username: Mapped[str]
     email: Mapped[str]
     password: Mapped[str]
+    is_active: Mapped[bool] = mapped_column(server_default=("False"))
