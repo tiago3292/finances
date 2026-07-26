@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.models.user import User
-from app.schemas.user import UserCreate
+from app.schemas.user import UserCreate, UserUpdate
 from app.core.security import get_password_hash
 
 def create_user(user: UserCreate, db: Session):
@@ -25,19 +25,16 @@ def read_users_me(user_id: int, db: Session):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-def update_user_me(user_id: int, updated_user: UserCreate, db: Session):
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    user.username = updated_user.username
-    user.email = updated_user.email
-    user.password = get_password_hash(updated_user.password)
+def update_user_me(current_user: User, user_data: UserUpdate, db: Session):
+    updated_fields = user_data.model_dump(exclude_unset=True)
+    for key, value in updated_fields.items():
+        setattr(current_user, key, value)
     db.commit()
-    db.refresh(user)
-    return user
+    db.refresh(current_user)
+    return current_user
     
-def delete_user_me(user_id: int, db: Session):
-    user = db.query(User).filter(User.id == user_id).first()
+def delete_user_me(current_user: User, db: Session):
+    user = db.query(User).filter(User.id == current_user.id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     db.delete(user)
