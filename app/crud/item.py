@@ -9,6 +9,7 @@ def create_item(item: ItemCreate, owner: User, db: Session):
     new_item = Item(
         title=item.title,
         value=item.value,
+        type=item.type.value,
         category=item.category.value,
         owner_id=owner.id
     )
@@ -22,7 +23,6 @@ def list_items(owner: User, db: Session):
     if not items:
         raise HTTPException(status_code=404, detail="Items not found")
     return items
-
 
 def read_item(item_id: int, owner: User, db: Session):
     item = db.query(Item).filter(Item.id == item_id).first()

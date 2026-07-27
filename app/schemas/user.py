@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from decimal import Decimal
 
 class UserCreate(BaseModel):
     username: str
@@ -9,6 +10,7 @@ class UserResponse(BaseModel):
     id: int
     username: str
     email: EmailStr
+    balance: Decimal
     model_config = {"from_attributes": True}
 
 class UserInDB(BaseModel):
@@ -16,6 +18,7 @@ class UserInDB(BaseModel):
     username: str
     email: EmailStr
     hashed_password: str
+    balance: Decimal
     model_config = {"from_attributes": True}
 
 class UserUpdate(BaseModel):

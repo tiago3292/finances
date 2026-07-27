@@ -12,9 +12,10 @@ router = APIRouter()
 
 @router.get("/me", response_model=schema.UserResponse)
 async def read_user(
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Session = Depends(get_db)
 ):
-    return current_user
+    return crud.read_users_me(current_user, db)
 
 @router.patch("/me", response_model=schema.UserResponse)
 def update_user(

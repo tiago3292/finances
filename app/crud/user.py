@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
@@ -19,8 +19,10 @@ def create_user(user: UserCreate, db: Session):
     db.refresh(new_user)
     return new_user
 
-def read_users_me(user_id: int, db: Session):
-    user = db.query(User).filter(User.id == user_id).first()
+def read_users_me(current_user: User, db: Session):
+    user = db.query(User).options(
+        joinedload(User.items) # <- Carrega os itens junto com o usuário na mesma query
+    ).filter(User.id == current_user.id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
