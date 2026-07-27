@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
-from sqlalchemy import String, ForeignKey, DateTime
+from decimal import Decimal
+from sqlalchemy import String, ForeignKey, DateTime, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime, timezone
 
@@ -13,7 +14,7 @@ class Item(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(200), nullable=False)
-    value: Mapped[float]
+    value: Mapped[Decimal] = mapped_column(Numeric(precision=10, scale=2))
     category: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),default=lambda: datetime.now(timezone.utc)
