@@ -10,6 +10,13 @@ from app.api.deps import get_current_user
 
 router = APIRouter()
 
+@router.get("/dashboard")
+def dashboard(
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Session = Depends(get_db)
+):
+    return crud.dashboard(current_user, db)
+
 @router.get("/me", response_model=schema.UserResponse)
 async def read_user(
     current_user: Annotated[User, Depends(get_current_user)],
