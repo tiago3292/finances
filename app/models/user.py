@@ -34,3 +34,5 @@ class User(Base):
             Decimal("0.00")
         )
         return earnings - expenses
+
+    uploaded_files: Mapped[str] = mapped_column(nullable=True)

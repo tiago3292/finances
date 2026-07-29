@@ -1,11 +1,19 @@
-from fastapi import HTTPException
+import uuid
+from io import BytesIO
+from pathlib import Path
+from PIL import Image, ImageOps, UnidentifiedImageError
+from fastapi import HTTPException, UploadFile, status
 from sqlalchemy.orm import Session, joinedload
+from starlette.concurrency import run_in_threadpool
 
 from app.models.user import User
 from app.models.item import Item
 from app.schemas.user import UserCreate, UserUpdate
 from app.schemas.item import ItemType
 from app.core.security import get_password_hash
+from app.core.config import settings
+
+UPLOAD_DIR = Path("app/static")
 
 def create_user(user: UserCreate, db: Session):
     user_exist = db.query(User).filter(User.username == user.username).first()
@@ -45,11 +53,9 @@ def delete_user_me(current_user: User, db: Session):
     db.commit()
     return {"message": "User deleted successfully"}
 
-'''
-Estatísticas que o Dashboard deve mostrar:
-- Maior ganho (nome: valor)
-- Marior gasto (nome: valor)
-'''
+
+
+# ---Lógica do Dashboard--- #
 def get_user_balance(current_user: User):
     return current_user.balance
 
@@ -104,3 +110,59 @@ def dashboard(current_user: User, db: Session):
             get_user_item_by_type(db, current_user, ItemType.EARNING)
             )
         }
+
+
+
+# ---Lógica do upload de arquivos--- #
+def process_upload(content: bytes) -> str:
+    # Abre a imagem através dos bytes recebidos. Levanta erro se o arquivo não for válido
+    with Image.open(BytesIO(content)) as original:
+        # Remove metadata de orientação de imagem, se possuir alguma
+        img = ImageOps.exif_transpose(original)
+        # Recorta a imagem nos valores especificados. Usa LANCZOS para resamplig de alta qualidade
+        #img = ImageOps.fit(img, (300,300), method=Image.Resampling.LANCZOS)
+        # Converte a imagem para RGB se necessário
+        if img.mode in ("RGBA", "LA", "P"):
+            img = img.convert("RGB")
+        # Gera um nome único para evitar conflitos na banco de dados
+        filename = f"{uuid.uuid4().hex}.jpg"
+        filepath = UPLOAD_DIR / filename
+        # Certifica que o diretório existe. Cria o diretório se não existir
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        # Salva a imagem como jpeg, qualidade 85 e otimizada
+        img.save(filepath, "JPEG", quality=85, optimize=True)
+    # Retorna o nome da imagem, que é o que será armazenado no banco de dados
+    return filename
+
+async def upload_file(current_user: User, file: UploadFile, db: Session):
+    user = db.query(User).filter(User.id == current_user.id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User do not have permission"
+            )
+    content = await file.read()
+    if len(content) > settings.max_upload_size_bytes:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"File too large. Maximum size is {settings.max_upload_size_bytes // (1024 * 1024)}MB",
+        )
+    try:
+        new_file = await run_in_threadpool(process_upload, content)
+        new_file = User.uploaded_files = user.uploaded_files
+    except UnidentifiedImageError as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid image file. Please upload a valid image (JPEG, PNG, GIR, WebP)"
+        ) from err
+    db.commit()
+    db.refresh(new_file)
+
+
+def delete_upload(filename: str | None) -> None:
+    if filename is None:
+        return
+    # Se o nome do arquivo existe, monta o caminho e deleta o arquivo, se existir
+    filepath = UPLOAD_DIR / filename
+    if filepath.exists():
+        filepath.unlink()
