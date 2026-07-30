@@ -28,3 +28,5 @@ class Item(Base):
         ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     owner: Mapped["User"] = relationship(back_populates="items", passive_deletes=True)
+
+    uploaded_file: Mapped[str | None] = mapped_column(nullable=True)

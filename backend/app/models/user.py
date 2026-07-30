@@ -18,7 +18,6 @@ class User(Base):
     username: Mapped[str]
     email: Mapped[str]
     password: Mapped[str]
-    is_active: Mapped[bool] = mapped_column(server_default="False")
     
     items: Mapped[list["Item"]] = relationship(back_populates="owner", passive_deletes=True)
 
@@ -34,5 +33,3 @@ class User(Base):
             Decimal("0.00")
         )
         return earnings - expenses
-
-    uploaded_file: Mapped[str | None] = mapped_column(nullable=True)

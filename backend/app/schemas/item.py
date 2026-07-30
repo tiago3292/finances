@@ -47,6 +47,8 @@ class ItemBase(BaseModel):
             )
         return self
 
+    uploaded_file: str | None = None
+
 
 class ItemCreate(ItemBase):
     pass
@@ -84,3 +86,5 @@ class ItemUpdate(BaseModel):
                     "Categoria inválida para o tipo de item selecionado."
                 )
         return self
+
+    uploaded_file: str | None = None
