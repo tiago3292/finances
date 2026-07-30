@@ -25,6 +25,6 @@ class Item(Base):
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
     owner_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id"), nullable=False
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
-    owner: Mapped["User"] = relationship(back_populates="items")
+    owner: Mapped["User"] = relationship(back_populates="items", passive_deletes=True)

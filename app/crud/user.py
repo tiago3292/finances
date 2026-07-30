@@ -115,22 +115,30 @@ def dashboard(current_user: User, db: Session):
 
 # ---Lógica do upload de arquivos--- #
 def process_upload(content: bytes) -> str:
+
     # Abre a imagem através dos bytes recebidos. Levanta erro se o arquivo não for válido
     with Image.open(BytesIO(content)) as original:
+
         # Remove metadata de orientação de imagem, se possuir alguma
         img = ImageOps.exif_transpose(original)
+
         # Recorta a imagem nos valores especificados. Usa LANCZOS para resamplig de alta qualidade
         #img = ImageOps.fit(img, (300,300), method=Image.Resampling.LANCZOS)
+
         # Converte a imagem para RGB se necessário
         if img.mode in ("RGBA", "LA", "P"):
             img = img.convert("RGB")
+
         # Gera um nome único para evitar conflitos na banco de dados
         filename = f"{uuid.uuid4().hex}.jpg"
         filepath = UPLOAD_DIR / filename
+
         # Certifica que o diretório existe. Cria o diretório se não existir
         UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
         # Salva a imagem como jpeg, qualidade 85 e otimizada
         img.save(filepath, "JPEG", quality=85, optimize=True)
+        
     # Retorna o nome da imagem, que é o que será armazenado no banco de dados
     return filename
 
@@ -140,7 +148,7 @@ async def upload_file(current_user: User, file: UploadFile, db: Session):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="User do not have permission"
-            )
+        )
     content = await file.read()
     if len(content) > settings.max_upload_size_bytes:
         raise HTTPException(
@@ -149,20 +157,36 @@ async def upload_file(current_user: User, file: UploadFile, db: Session):
         )
     try:
         new_file = await run_in_threadpool(process_upload, content)
-        new_file = User.uploaded_files = user.uploaded_files
     except UnidentifiedImageError as err:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid image file. Please upload a valid image (JPEG, PNG, GIR, WebP)"
         ) from err
+    current_user.uploaded_file = new_file
     db.commit()
-    db.refresh(new_file)
+    db.refresh(current_user)
+    return current_user
 
+async def read_files(current_user: User, db: Session):
+    if db.query(User).filter(User.id != current_user.id).first():
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User do not have permission"
+        )
+    if not current_user.uploaded_file:
+        return {"no files": "Nothing to show"}
+    return current_user.uploaded_file
 
-def delete_upload(filename: str | None) -> None:
-    if filename is None:
-        return
-    # Se o nome do arquivo existe, monta o caminho e deleta o arquivo, se existir
+async def delete_file(filename: str, current_user: User, db: Session):
+    if db.query(User).filter(User.id != current_user.id).first():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No file to delete",
+        )
     filepath = UPLOAD_DIR / filename
     if filepath.exists():
         filepath.unlink()
+    current_user.uploaded_file = None
+    db.commit()
+    db.refresh(current_user)
+    return {"Message": "File deleted successfully"}

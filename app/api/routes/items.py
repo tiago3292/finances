@@ -5,7 +5,6 @@ from typing import Annotated
 from app.api.deps import get_db
 from app.crud import item as crud
 from app.schemas import item as schema
-from app.models.item import Item
 from app.models.user import User
 from app.api.deps import get_current_user
 

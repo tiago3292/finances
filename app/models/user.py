@@ -20,7 +20,7 @@ class User(Base):
     password: Mapped[str]
     is_active: Mapped[bool] = mapped_column(server_default="False")
     
-    items: Mapped[list["Item"]] = relationship(back_populates="owner")
+    items: Mapped[list["Item"]] = relationship(back_populates="owner", passive_deletes=True)
 
     # Propriedade híbrida para calcular o saldo dinamicamente
     @hybrid_property
@@ -35,4 +35,4 @@ class User(Base):
         )
         return earnings - expenses
 
-    uploaded_files: Mapped[str] = mapped_column(nullable=True)
+    uploaded_file: Mapped[str | None] = mapped_column(nullable=True)
