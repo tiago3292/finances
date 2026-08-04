@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, model_validator, Field
 
 
 class ItemType(str, Enum):
@@ -25,7 +25,7 @@ class EarningCategory(str, Enum):
 # Evita repetir a mesma lógica e campos no ItemCreate e ItemResponse
 class ItemBase(BaseModel):
     title: str
-    value: float
+    value: float = Field(gt=0)
     type: ItemType
     category: ExpenseCategory | EarningCategory
 
@@ -64,7 +64,7 @@ class ItemResponse(ItemBase):
 
 class ItemUpdate(BaseModel):
     title: str | None = None
-    value: float | None = None
+    value: float | None = Field(default=None, gt=0)
     type: ItemType | None = None
     category: ExpenseCategory | EarningCategory | None = None
 

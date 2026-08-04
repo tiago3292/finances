@@ -53,8 +53,8 @@ def get_user_balance(current_user: User):
 
 def get_user_item_by_type(db: Session, current_user: User, type):
         return db.query(Item).filter(
-            User.id == current_user.id,
-            Item.type == type
+            Item.owner_id == current_user.id,
+            Item.type == type,
             ).all()
     
 def category_percentage(filtered_items):
