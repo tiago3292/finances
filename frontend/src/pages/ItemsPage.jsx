@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getItems, createItem, updateItem, deleteItem } from "../api/items";
+import { uploadFile, deleteFile } from "../api/uploads";
 
 const EXPENSE_CATEGORIES = ["contas", "mercado", "transporte", "manutenções", "lazer", "outro gasto"];
 const EARNING_CATEGORIES = ["salário", "vale", "outro ganho"];
@@ -17,6 +18,8 @@ function ItemsPage() {
   const [editingId, setEditingId] = useState(null);
   const [editTitle, setEditTitle] = useState("");
   const [editValue, setEditValue] = useState("");
+
+  const [uploadingId, setUploadingId] = useState(null);
 
   useEffect(() => {
     loadItems();
@@ -78,6 +81,27 @@ function ItemsPage() {
     }
   }
 
+  async function handleFileUpload(itemId, file) {
+    setUploadingId(itemId);
+    try {
+      await uploadFile(itemId, file);
+      await loadItems();
+    } catch (err) {
+      setError("Não foi possível enviar o arquivo.");
+    } finally {
+      setUploadingId(null);
+    }
+  }
+
+  async function handleFileDelete(filename) {
+    try {
+      await deleteFile(filename);
+      await loadItems();
+    } catch (err) {
+      setError("Não foi possível remover o arquivo.");
+    }
+  }
+
   const categoryOptions = type === "gasto" ? EXPENSE_CATEGORIES : EARNING_CATEGORIES;
 
   if (isLoading) return <p>Carregando itens...</p>;
@@ -124,6 +148,22 @@ function ItemsPage() {
               {item.title} — {item.type} — R$ {item.value} ({item.category})
               <button onClick={() => startEditing(item)}>Editar</button>
               <button onClick={() => handleDelete(item.id)}>Excluir</button>
+
+              {item.uploaded_file ? (
+                <span>
+                  {item.uploaded_file}
+                  <button onClick={() => handleFileDelete(item.uploaded_file)}>Remover arquivo</button>
+                </span>
+              ) : (
+                <input
+                  type="file"
+                  disabled={uploadingId === item.id}
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) handleFileUpload(item.id, file);
+                  }}
+                />
+              )}
             </li>
           )
         )}

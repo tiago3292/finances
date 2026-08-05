@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { getDashboard } from "../api/users";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 function DashboardPage() {
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadDashboard() {
@@ -32,6 +37,9 @@ function DashboardPage() {
   return (
     <div>
       <h1>Dashboard</h1>
+
+      <button onClick={() => navigate("/items")}>Itens</button>
+      <button onClick={logout}>Logout</button>
 
       <h2 style={{ color: saldo < 0 ? "red" : "green" }}>
         Saldo atual: R$ {saldo}
