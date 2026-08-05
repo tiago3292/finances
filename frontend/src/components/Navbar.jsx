@@ -12,8 +12,8 @@ export default function Navbar() {
 
   return (
     <nav className="bg-zinc-900 border-b-4 border-zinc-100 p-4 font-mono">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-black uppercase text-orange-600 tracking-tight">
+      <div className="mx-auto flex justify-between items-center">
+        <Link to="/dashboard" className="text-xl font-black uppercase text-orange-600 tracking-tight">
           //FINANCES APP
         </Link>
         <div className="flex items-center space-x-6">
