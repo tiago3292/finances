@@ -39,7 +39,7 @@ function ItemsPage() {
       const data = await getItems();
       setItems(data);
     } catch (err) {
-      setError("Não foi possível carregar os itens.");
+      setError("Sem itens para exibir.");
     } finally {
       setIsLoading(false);
     }

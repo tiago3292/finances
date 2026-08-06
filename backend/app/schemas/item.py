@@ -25,7 +25,7 @@ class EarningCategory(str, Enum):
 # Evita repetir a mesma lógica e campos no ItemCreate e ItemResponse
 class ItemBase(BaseModel):
     title: str
-    value: float = Field(gt=0)
+    value: float = Field(ge=0)
     type: ItemType
     category: ExpenseCategory | EarningCategory
 
@@ -64,7 +64,7 @@ class ItemResponse(ItemBase):
 
 class ItemUpdate(BaseModel):
     title: str | None = None
-    value: float | None = Field(default=None, gt=0)
+    value: float | None = Field(default=None, ge=0)
     type: ItemType | None = None
     category: ExpenseCategory | EarningCategory | None = None
 

@@ -52,15 +52,23 @@ def get_user_balance(current_user: User):
     return current_user.balance
 
 def get_user_item_by_type(db: Session, current_user: User, type):
-        return db.query(Item).filter(
-            Item.owner_id == current_user.id,
-            Item.type == type,
-            ).all()
+    items_list =  db.query(Item).filter(
+        Item.owner_id == current_user.id,
+        Item.type == type,
+        ).all()
+    if not items_list:
+        return 0
+    return items_list
     
 def category_percentage(filtered_items):
     if not filtered_items:
-        return {"No items": "Nothing to show"}
+        return 0
     total_value = sum(item.value for item in filtered_items)
+
+    # Evita a divisão por zero se todos os itens cadastrados tiverem valor R$ 0.00
+    if total_value == 0:
+        return 0
+    
     #Cria um dicionário com a soma dos valores agrupados por categoria
     category_totals = {}
     for item in filtered_items:
@@ -73,10 +81,17 @@ def category_percentage(filtered_items):
 
 def total_value_per_type(filtered_items):
     if not filtered_items:
-        return {"No items": "Nothing to show"}
+        return 0
     return sum(item.value for item in filtered_items)
 
 def get_biggest_value(filtered_items):
+    if not filtered_items:
+        return 0
+
+    valid_items = [item for item in filtered_items if item.value > 0]
+    if not valid_items:
+        return 0
+    
     biggest_value = max(filtered_items, key=lambda item: item.value)
     return {biggest_value.title: biggest_value.value}
 
