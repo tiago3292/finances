@@ -143,11 +143,13 @@ docker compose up
 
 Em construção
 
+<!--
 This is an example of how to list things you need to use the software and how to install them.
 * npm
   ```sh
   npm install npm@latest -g
   ```
+  -->
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
 ### <h3 id="instalacao">Instalação</h3>
