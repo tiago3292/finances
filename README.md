@@ -39,15 +39,27 @@
 </details>
 
 <!-- SOBRE O PROJETO -->
-## <h3 id="sobre-o-projeto">Sobre o projeto</h3>
+# Sobre o projeto
+<a id="sobre-o-projeto"></a>
 
 [![Product Name Screen Shot][product-screenshot]]
 
 Aplicativo de finanças pessoais. Registre seus gastos e ganhos para ter um controle organizado da sua renda. Desenvolvido como o sétimo projeto de um desafio de desenvolvimento de 12 meses, com foco em conceitos avançados de React e Python.
 
+### Funcionalidades
+<a id="funcionalidades"></a>
+* Criação de contas e autenticação por token
+* Rotas protegidas
+* Dashboard com resumos, gráficos e itens com maiores valores
+* Rota para criação, edição e exclusão de gastos e ganhos
+* Tabelas com todos os gastos e ganhos registrados
+* Função de filtro por categoria, data inicial e data final
+* Upload de imagem para cara item cadastrado
+
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
-## <h3 id="feito-com">Tecnologias usadas</h3>
+# Tecnologias usadas
+<a id="feito-com"></a>
 
 * [![Python][Python]][Python-url]
 * [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
@@ -57,7 +69,8 @@ Aplicativo de finanças pessoais. Registre seus gastos e ganhos para ter um cont
 
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
-## <h3 id="estrutura">Estrutura do projeto</h3>
+# Estrutura do projeto
+<a id="estrutura"></a>
 
 Estrutura do backend:
 ```
@@ -128,31 +141,36 @@ frontend/
 ├── package.json
 └── vite.config.js
 ```
-
+<p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 <!-- GETTING STARTED -->
-## <h3 id="comece-aqui">Comece Aqui</h3>
+
+# Comece Aqui
+<a id="comece-aqui"></a>
 
 As instruções à seguir mostram como instalar e executar o código fonte localmente.
-* Se você quiser usar a versão online, clique <a href="">neste link</a> para iniciar o serviço de backend, e depois <a href="">neste link</a> para acessar o aplicativo.
+
+### Preview online
+* Se você quiser usar a versão online, clique <a href="https://task-tracker-api-2k8u.onrender.com">neste link</a> para iniciar o serviço de backend, e depois <a href="https://finance-tracker-sigma-bice-93.vercel.app">neste link</a> para acessar o aplicativo.
+
+### Docker
 * Para executar a versão em Docker: Baixe o código fonte do projeto e execute o seguinte comando na pasta raiz:
 ```
 docker compose up
 ```
 
-### <h3 id="pre-requisitos">Pré-requisitos</h3>
-
-Em construção
-
-<!--
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-  -->
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
-### <h3 id="instalacao">Instalação</h3>
+## Pré-requisitos
+<a id="prerequisitos"></a>
+
+* <a href="https://www.python.org/downloads">Python 3.14.7+</a>
+* <a href="https://nodejs.org/pt-br/download">Node.js 18+</a>
+* <a href ="https://www.postgresql.org/download">PostgreSQL 18.3+</a>
+
+<p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
+
+## Instalação
+<a id="instalacao"></a>
 
 Em construção
 
@@ -180,6 +198,7 @@ Em construção
 
 <!-- USAGE EXAMPLES -->
 ## Uso
+<a id="uso"></a>
 
 Em construção
 
@@ -193,14 +212,17 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 
 <!-- CONCEITOS USADOS -->
-## <h3 id="conceitos">Conceitos Usados</h3>
+<p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
+
+# Conceitos Usados
+<a id="conceitos"></a>
 
 Em construção
 
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
 <!-- CONTATO -->
-## Contato
+# Contato
 
 Em construção
 <!--
@@ -212,7 +234,7 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: screenshot.png
 <!-- Shields.io badges. You can a comprehensive list with many more badges at: https://github.com/inttter/md-badges -->
 [Python]: https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white
 [Python-url]: https://www.python.org/
