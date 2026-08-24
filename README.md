@@ -39,8 +39,7 @@
 </details>
 
 <!-- SOBRE O PROJETO -->
-# Sobre o projeto
-<a id="sobre-o-projeto"></a>
+# <a id="sobre-o-projeto">Sobre o projeto</a>
 
 ![Product Name Screen Shot][product-screenshot]
 
@@ -69,8 +68,8 @@ Aplicativo de finanças pessoais. Registre seus gastos e ganhos para ter um cont
 
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
-# Estrutura do projeto
-<a id="estrutura"></a>
+# <a id="estrutura">Estrutura do projeto</a>
+
 
 Estrutura do backend:
 ```
@@ -144,8 +143,7 @@ frontend/
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 <!-- GETTING STARTED -->
 
-# Comece Aqui
-<a id="comece-aqui"></a>
+# <a id="comece-aqui">Comece Aqui</a>
 
 As instruções à seguir mostram como instalar e executar o código fonte localmente.
 
@@ -160,8 +158,7 @@ docker compose up
 
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
-## Pré-requisitos
-<a id="prerequisitos"></a>
+## <a id="prerequisitos">Pré-requisitos</a>
 
 * <a href="https://www.python.org/downloads">Python 3.14.7+</a>
 * <a href="https://nodejs.org/pt-br/download">Node.js 18+</a>
@@ -169,8 +166,7 @@ docker compose up
 
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
-## Instalação
-<a id="instalacao"></a>
+## <a id="instalacao">Instalação</a>
 
 Em construção
 
@@ -197,8 +193,7 @@ Em construção
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
 <!-- USAGE EXAMPLES -->
-## Uso
-<a id="uso"></a>
+## <a id="uso">Uso</a>
 
 Em construção
 
@@ -214,8 +209,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- CONCEITOS USADOS -->
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
-# Conceitos Usados
-<a id="conceitos"></a>
+# <a id="conceitos">Conceitos Usados</a>
 
 Em construção
 
