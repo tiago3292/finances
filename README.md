@@ -45,8 +45,8 @@
 
 Aplicativo de finanças pessoais. Registre seus gastos e ganhos para ter um controle organizado da sua renda. Desenvolvido como o sétimo projeto de um desafio de desenvolvimento de 12 meses, com foco em conceitos avançados de React e Python.
 
-### Funcionalidades
-<a id="funcionalidades"></a>
+### <a id="funcionalidades">Funcionalidades</a>
+
 * Criação de contas e autenticação por token
 * Rotas protegidas
 * Dashboard com resumos, gráficos e itens com maiores valores
@@ -57,8 +57,7 @@ Aplicativo de finanças pessoais. Registre seus gastos e ganhos para ter um cont
 
 <p align="right">(<a href="#topo">Voltar ao topo</a>)</p>
 
-# Tecnologias usadas
-<a id="feito-com"></a>
+# <a id="feito-com">Tecnologias usadas</a>
 
 * [![Python][Python]][Python-url]
 * [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
