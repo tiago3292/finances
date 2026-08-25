@@ -245,7 +245,7 @@ http://localhost:8000/redoc # ReDoc
 ```
 ### Aplicativo
 ```sh
-http://localhost:5173 # Dentro da pasta "frontend"
+http://localhost:5173
 ```
 ### Docker
 ```sh
