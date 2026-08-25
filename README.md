@@ -190,7 +190,7 @@ cp .env.example .env
 ```
 Abra o .env e preencha com os dados do seu banco de dados:
 ```sh
-DATABASE_URL=postgresql://username:password@localhost:5432/db_name
+DATABASE_URL=postgresql://username:password@localhost:5432/finances
 SECRET_KEY=your_secret_key_here_generate_with_openssl_rand_hex_32
 ALGORITHM=your_algorithm_here--delfault:HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=int_here
