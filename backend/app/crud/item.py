@@ -29,23 +29,23 @@ def create_item(item: ItemCreate, owner: User, db: Session):
 def list_items(owner: User, db: Session):
     items = db.query(Item).filter(Item.owner_id == owner.id).all()
     if not items:
-        raise HTTPException(status_code=404, detail="Items not found")
+        raise HTTPException(status_code=404, detail="Item não encontrado.")
     return items
 
 def read_item(item_id: int, owner: User, db: Session):
     item = db.query(Item).filter(Item.id == item_id).first()
     if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item não encontrado.")
     if item.owner_id != owner.id:
-        raise HTTPException(status_code=403, detail="You do not have the permission to see this item")
+        raise HTTPException(status_code=403, detail="Você não possui permissão para ver este item.")
     return item
 
 def update_item(item_id: int, updated_item: ItemUpdate, owner: User, db: Session):
     item = db.query(Item).filter(Item.id == item_id).first()
     if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item não encontrado.")
     if item.owner_id != owner.id:
-        raise HTTPException(status_code=403, detail="You do not have the permission to see this item")
+        raise HTTPException(status_code=403, detail="Você não possui permissão para ver este item.")
     updated_fields = updated_item.model_dump(exclude_unset=True)
     for key, value in updated_fields.items():
         setattr(item, key, value)
@@ -56,16 +56,16 @@ def update_item(item_id: int, updated_item: ItemUpdate, owner: User, db: Session
 def delete_item(item_id: int, owner: User, db: Session):
     item = db.query(Item).filter(Item.id == item_id).first()
     if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item não encontrado.")
     if item.owner_id != owner.id:
-        raise HTTPException(status_code=403, detail="You do not have the permission to see this item")
+        raise HTTPException(status_code=403, detail="Você não possui permissão para ver este item.")
     if item.uploaded_file:
         filepath = UPLOAD_DIR / item.uploaded_file
         if filepath.exists():
             filepath.unlink()
     db.delete(item)
     db.commit()
-    return {"message": "Item deleted successfully"}
+    return {"message": "Item deletado com sucesso."}
 
 
 
@@ -101,9 +101,9 @@ def process_upload(content: bytes) -> str:
 async def upload_file(owner: User, item_id: int, file: UploadFile, db: Session):
     item = db.query(Item).filter(Item.id == item_id).first()
     if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item não encontrado.")
     if item.owner_id != owner.id:
-        raise HTTPException(status_code=403, detail="You do not have the permission to see this item")
+        raise HTTPException(status_code=403, detail="Você não possui permissão para ver este item.")
     content = await file.read()
     if len(content) > settings.max_upload_size_bytes:
         raise HTTPException(
@@ -115,19 +115,19 @@ async def upload_file(owner: User, item_id: int, file: UploadFile, db: Session):
     except UnidentifiedImageError as err:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid image file. Please upload a valid image (JPEG, PNG, GIR, WebP)"
+            detail="Arquivo inválido. Por favor, faça upload de um arquivo de imagem válido (JPEG, PNG, GIR, WebP)"
         ) from err
     item.uploaded_file = new_file
     db.commit()
     db.refresh(item)
-    return {"Message": "File uploaded successfully"}
+    return {"Mensagem": "Imagem carregada com sucesso."}
 
 async def delete_file(filename: str, current_user: User, db: Session):
     current_item = db.query(Item).filter(Item.owner_id == current_user.id, Item.uploaded_file == filename).first()
     if not current_item:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="User do not have permission"
+            detail="O usuário não possui permissão"
             )
     filepath = UPLOAD_DIR / filename
     if filepath.exists():
@@ -135,4 +135,4 @@ async def delete_file(filename: str, current_user: User, db: Session):
     current_item.uploaded_file = None
     db.commit()
     db.refresh(current_item)
-    return {"Message": "File deleted successfully"}
+    return {"Mensagem": "Arquivo deletado com sucesso."}

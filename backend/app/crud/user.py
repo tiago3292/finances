@@ -10,7 +10,7 @@ from app.core.security import get_password_hash
 def create_user(user: UserCreate, db: Session):
     user_exist = db.query(User).filter(User.username == user.username).first()
     if user_exist:
-        raise HTTPException(status_code=400, detail="User already exists")
+        raise HTTPException(status_code=400, detail="Usuário já existe.")
     new_user = User(
         username = user.username,
         email = user.email,
@@ -26,7 +26,7 @@ def read_users_me(current_user: User, db: Session):
         joinedload(User.items) # <- Carrega os itens junto com o usuário na mesma query
     ).filter(User.id == current_user.id).first()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
     return user
 
 def update_user_me(current_user: User, user_data: UserUpdate, db: Session):
@@ -40,10 +40,10 @@ def update_user_me(current_user: User, user_data: UserUpdate, db: Session):
 def delete_user_me(current_user: User, db: Session):
     user = db.query(User).filter(User.id == current_user.id).first()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
     db.delete(user)
     db.commit()
-    return {"message": "User deleted successfully"}
+    return {"Mensagem": "Usuário deletado com sucesso."}
 
 
 
@@ -75,7 +75,7 @@ def category_percentage(filtered_items):
         category_totals[item.category] = category_totals.get(item.category, 0) + item.value
     #Gera o dicionário final com a porcentagem formatada como string inteira
     return {
-        category: str(int((category_val / total_value) * 100)) + "%"
+        category: str(int((category_val / total_value) * 100))
         for category, category_val in category_totals.items()
         }
 
@@ -91,7 +91,7 @@ def get_biggest_value(filtered_items):
     valid_items = [item for item in filtered_items if item.value > 0]
     if not valid_items:
         return 0
-    
+
     biggest_value = max(filtered_items, key=lambda item: item.value)
     return {biggest_value.title: biggest_value.value}
 

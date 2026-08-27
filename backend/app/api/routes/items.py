@@ -10,7 +10,7 @@ from app.api.deps import get_current_user
 
 router = APIRouter()
 
-@router.post("/newitem", response_model=schema.ItemResponse)
+@router.post("/", response_model=schema.ItemResponse)
 def create_item(
     item: schema.ItemCreate,
     current_user: Annotated[User, Depends(get_current_user)],
@@ -18,7 +18,7 @@ def create_item(
 ):
     return crud.create_item(item, current_user, db)
 
-@router.get("/myitems", response_model=list[schema.ItemResponse])
+@router.get("/", response_model=list[schema.ItemResponse])
 async def fetch_items(
     current_user: Annotated[User, Depends(get_current_user)],
     db: Session = Depends(get_db)
@@ -33,7 +33,7 @@ def get_item(
 ):
     return crud.read_item(item_id, current_user, db)
 
-@router.put("/edititem", response_model=schema.ItemResponse)
+@router.put("/{item_id}", response_model=schema.ItemResponse)
 def put_item(
     item_id: int,
     updated_item: schema.ItemUpdate,
@@ -42,7 +42,7 @@ def put_item(
 ):
     return crud.update_item(item_id, updated_item, current_user, db)
 
-@router.delete("/deleteitem")
+@router.delete("/{item_id}")
 def del_item(
     item_id: int,
     current_user: Annotated[User, Depends(get_current_user)],
