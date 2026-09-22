@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     secret_key: str = Field(default=..., alias="SECRET_KEY")
     algorithm: str = Field(default=..., alias="ALGORITHM")
     access_token_expire_minutes: int = Field(default=..., alias="ACCESS_TOKEN_EXPIRE_MINUTES")
-    cors_deploy: str | None = None
+    cors_deploy: str = Field(default=..., alias="CORS_DEPLOY")
 
     # Limitação do tamanho máximo permitido por arquivo
     max_upload_size_bytes: int = 8 * 1024 * 1024
