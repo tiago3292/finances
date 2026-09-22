@@ -19,6 +19,7 @@ app.add_middleware(
     allow_origins=[
         settings.cors_deploy,
         "http://localhost:5173",
+        "http://localhost:5174",
         "http://localhost:3000",
         "http://finance-frontend:3000",
         "http://127.0.0.1:3000",

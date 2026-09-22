@@ -1,8 +1,10 @@
+// import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { getItems, createItem, updateItem, deleteItem } from "../api/items";
 import { uploadFile, deleteFile } from "../api/uploads";
+
 import Navbar from "../components/Navbar";
+import ItemForm from "../components/ItemForm";
 
 const EXPENSE_CATEGORIES = ["contas", "mercado", "transporte", "manutenções", "lazer", "outro gasto"];
 const EARNING_CATEGORIES = ["salário", "vale", "outro ganho"];
@@ -28,7 +30,9 @@ function ItemsPage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
+  // const navigate = useNavigate();
 
   useEffect(() => {
     loadItems();
@@ -38,22 +42,11 @@ function ItemsPage() {
     try {
       const data = await getItems();
       setItems(data);
+      setError(null)
     } catch (err) {
-      setError("Sem itens para exibir.");
+      setError("Não foi possível exibir os itens.");
     } finally {
       setIsLoading(false);
-    }
-  }
-
-  async function handleCreate(e) {
-    e.preventDefault();
-    try {
-      await createItem({ title, value: parseFloat(value), type, category });
-      setTitle("");
-      setValue("");
-      await loadItems();
-    } catch (err) {
-      setError("Não foi possível criar o item.");
     }
   }
 
@@ -153,14 +146,21 @@ function ItemsPage() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-mono p-6 md:p-10 space-y-8">
       {/* Topo com navegação */}
       <Navbar />
-      <header className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(244,244,245,1)] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <header className="flex border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(244,244,245,1)] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-black uppercase text-orange-600 tracking-tight">Meus Itens</h1>
           <p className="text-xs text-zinc-400 uppercase mt-1 font-bold">Gestão e Registro de Lançamentos</p>
         </div>
+
+        <button
+            onClick={() => setShowModal(true)}
+            className="bg-zinc-100 text-zinc-950 font-black uppercase px-4 py-2 border-2 border-zinc-100 hover:bg-zinc-300 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            + Novo Registro
+        </button>
       </header>
 
-      {/* Formulário de Adição */}
+      {/* Formulário de Adição
       <div className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[6px_6px_0px_0px_rgba(244,244,245,1)] space-y-4">
         <h2 className="text-xl font-black uppercase text-orange-600 border-b-2 border-zinc-100 pb-2">Novo Registro</h2>
         <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-5 gap-4">
@@ -214,7 +214,7 @@ function ItemsPage() {
             + Adicionar
           </button>
         </form>
-      </div>
+      </div> */}
 
       {error && (
         <div className="border-2 border-rose-500 bg-rose-950/50 p-4 text-rose-400 font-bold text-xs uppercase">
@@ -299,6 +299,16 @@ function ItemsPage() {
         handleFileDelete={handleFileDelete}
         uploadingId={uploadingId}
       />
+
+      {/* Modal Brutalista para criação de item */}
+      {showModal && (
+        <div  className="fixed inset-0 bg-zinc-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <ItemForm
+            onItemAdded={loadItems}
+            onClose={() => setShowModal(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }

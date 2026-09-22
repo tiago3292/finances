@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createItem, updateItem } from '../api/items';
+import { uploadFile } from '../api/uploads';
 
 export default function ItemForm({ onItemAdded, onClose }) {
   const [title, setTitle] = useState('');
@@ -9,6 +10,16 @@ export default function ItemForm({ onItemAdded, onClose }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const EXPENSE_CATEGORIES = ["contas", "mercado", "transporte", "manutenções", "lazer", "outro gasto"];
+  const EARNING_CATEGORIES = ["salário", "vale", "outro ganho"];
+
+  const categoryOptions = type === "gasto" ? EXPENSE_CATEGORIES : EARNING_CATEGORIES;
+
+  const handleTypeChange = (newType) => {
+    setType(newType);
+    setCategory(newType == "gasto" ? EXPENSE_CATEGORIES[0] : EARNING_CATEGORIES[0]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,30 +37,32 @@ export default function ItemForm({ onItemAdded, onClose }) {
 
       // 2. Se houver comprovante, faz o upload vinculando ao ID criado
       if (file && newItem?.id) {
-        await uploadItemFile(newItem.id, file);
+        await uploadFile(newItem.id, file);
       }
 
       onItemAdded();
       if (onClose) onClose();
-    } catch (err) {
-      setError(err.response?.data?.detail || 'Erro ao salvar item.');
-    } finally {
-      setLoading(false);
-    }
+      } catch (err) {
+        setError(err.response?.data?.detail || 'Erro ao salvar item.');
+      } finally {
+        setLoading(false);
+      }
   };
 
   return (
     <div className="bg-zinc-900 border-4 border-zinc-100 p-6 shadow-[8px_8px_0px_0px_rgba(244,244,245,1)] font-mono text-zinc-100 max-w-md w-full">
       <div className="flex justify-between items-center mb-6 border-b-4 border-zinc-100 pb-2">
         <h2 className="text-xl font-black uppercase">Novo Registro</h2>
-        {onClose && (
+
+        {/* {onClose && (
           <button
             onClick={onClose}
             className="text-zinc-400 hover:text-zinc-100 font-bold"
           >
             [X]
           </button>
-        )}
+        )} */}
+
       </div>
 
       {error && (
@@ -66,7 +79,7 @@ export default function ItemForm({ onItemAdded, onClose }) {
           <div className="grid grid-cols-2 gap-2">
             <button
               type="button"
-              onClick={() => setType('gasto')}
+              onClick={() => handleTypeChange('gasto')}
               className={`p-2 border-2 border-zinc-100 font-bold uppercase transition-all ${
                 type === 'gasto'
                   ? 'bg-rose-500 text-zinc-950 shadow-[2px_2px_0px_0px_rgba(244,244,245,1)]'
@@ -77,7 +90,7 @@ export default function ItemForm({ onItemAdded, onClose }) {
             </button>
             <button
               type="button"
-              onClick={() => setType('ganho')}
+              onClick={() => handleTypeChange('ganho')}
               className={`p-2 border-2 border-zinc-100 font-bold uppercase transition-all ${
                 type === 'ganho'
                   ? 'bg-emerald-500 text-zinc-950 shadow-[2px_2px_0px_0px_rgba(244,244,245,1)]'
@@ -122,14 +135,15 @@ export default function ItemForm({ onItemAdded, onClose }) {
           <label className="block text-xs font-bold uppercase mb-1 text-zinc-400">
             Categoria
           </label>
-          <input
-            type="text"
-            required
+          <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-zinc-950 border-2 border-zinc-100 p-2 text-zinc-100 font-bold focus:outline-none"
-            placeholder="Ex: mercado, vale, transporte"
-          />
+            className="bg-zinc-950 border-2 border-zinc-100 p-3 text-zinc-100 font-bold focus:outline-none uppercase"
+            >
+            {categoryOptions.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
         </div>
 
         <div>
@@ -150,6 +164,14 @@ export default function ItemForm({ onItemAdded, onClose }) {
           className="w-full bg-zinc-100 text-zinc-950 font-black uppercase p-3 border-2 border-zinc-100 hover:bg-zinc-300 active:translate-x-1 active:translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-2"
         >
           {loading ? 'Processando...' : 'Cadastrar Item'}
+        </button>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="w-full bg-rose-500 text-zinc-950 font-black uppercase p-3 border-2 border-zinc-100 hover:bg-zinc-300 active:translate-x-1 active:translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-2"
+        >
+          Cancelar
         </button>
       </form>
     </div>

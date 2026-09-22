@@ -28,8 +28,8 @@ def create_item(item: ItemCreate, owner: User, db: Session):
 
 def list_items(owner: User, db: Session):
     items = db.query(Item).filter(Item.owner_id == owner.id).all()
-    if not items:
-        raise HTTPException(status_code=404, detail="Item não encontrado.")
+    #if not items:
+    #    raise HTTPException(status_code=404, detail="Item não encontrado.")
     return items
 
 def read_item(item_id: int, owner: User, db: Session):
