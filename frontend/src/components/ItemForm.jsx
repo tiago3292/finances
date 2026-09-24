@@ -50,9 +50,9 @@ export default function ItemForm({ onItemAdded, onClose }) {
   };
 
   return (
-    <div className="bg-zinc-900 border-4 border-zinc-100 p-6 shadow-[8px_8px_0px_0px_rgba(244,244,245,1)] font-mono text-zinc-100 max-w-md w-full">
-      <div className="flex justify-between items-center mb-6 border-b-4 border-zinc-100 pb-2">
-        <h2 className="text-xl font-black uppercase">Novo Registro</h2>
+    <div className="bg-zinc-900 border-1 border-zinc-600 p-6 font-mono text-zinc-100 max-w-md w-full">
+      <div className="flex justify-between items-center mb-6 border-b-1 border-zinc-600 pb-2">
+        <h2 className="text-3xl text-orange-600 font-black uppercase">Novo Registro</h2>
 
         {/* {onClose && (
           <button
@@ -66,7 +66,7 @@ export default function ItemForm({ onItemAdded, onClose }) {
       </div>
 
       {error && (
-        <div className="bg-rose-950 border-2 border-rose-500 text-rose-200 p-2 text-xs mb-4 uppercase font-bold">
+        <div className="bg-rose-950 text-rose-200 p-2 text-xs mb-4 uppercase font-bold">
           {error}
         </div>
       )}
@@ -80,10 +80,10 @@ export default function ItemForm({ onItemAdded, onClose }) {
             <button
               type="button"
               onClick={() => handleTypeChange('gasto')}
-              className={`p-2 border-2 border-zinc-100 font-bold uppercase transition-all ${
+              className={`p-2 border-1 border-zinc-600 font-bold uppercase transition-all ${
                 type === 'gasto'
-                  ? 'bg-rose-500 text-zinc-950 shadow-[2px_2px_0px_0px_rgba(244,244,245,1)]'
-                  : 'bg-zinc-950 text-zinc-400'
+                  ? 'bg-rose-500 text-zinc-950'
+                  : 'bg-zinc-950 hover:bg-zinc-600 text-zinc-400'
               }`}
             >
               Gasto (-)
@@ -91,10 +91,10 @@ export default function ItemForm({ onItemAdded, onClose }) {
             <button
               type="button"
               onClick={() => handleTypeChange('ganho')}
-              className={`p-2 border-2 border-zinc-100 font-bold uppercase transition-all ${
+              className={`p-2 border-1 border-zinc-600 font-bold uppercase transition-all ${
                 type === 'ganho'
-                  ? 'bg-emerald-500 text-zinc-950 shadow-[2px_2px_0px_0px_rgba(244,244,245,1)]'
-                  : 'bg-zinc-950 text-zinc-400'
+                  ? 'bg-emerald-500 text-zinc-950'
+                  : 'bg-zinc-950 hover:bg-zinc-600 text-zinc-400'
               }`}
             >
               Ganho (+)
@@ -111,7 +111,7 @@ export default function ItemForm({ onItemAdded, onClose }) {
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full bg-zinc-950 border-2 border-zinc-100 p-2 text-zinc-100 font-bold focus:outline-none"
+            className="w-full bg-zinc-950 border-1 border-zinc-600 p-2 text-zinc-100 font-bold focus:outline-none"
             placeholder="Ex: Mercado, Salário..."
           />
         </div>
@@ -126,7 +126,7 @@ export default function ItemForm({ onItemAdded, onClose }) {
             required
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            className="w-full bg-zinc-950 border-2 border-zinc-100 p-2 text-zinc-100 font-bold focus:outline-none"
+            className="w-full bg-zinc-950 border-1 border-zinc-600 p-2 text-zinc-100 font-bold focus:outline-none"
             placeholder="0.00"
           />
         </div>
@@ -138,7 +138,7 @@ export default function ItemForm({ onItemAdded, onClose }) {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="bg-zinc-950 border-2 border-zinc-100 p-3 text-zinc-100 font-bold focus:outline-none uppercase"
+            className="bg-zinc-950 border-1 border-zinc-600 p-3 text-zinc-100 font-bold focus:outline-none uppercase"
             >
             {categoryOptions.map((cat) => (
               <option key={cat} value={cat}>{cat}</option>
@@ -154,14 +154,14 @@ export default function ItemForm({ onItemAdded, onClose }) {
             type="file"
             accept="image/*"
             onChange={(e) => setFile(e.target.files[0])}
-            className="w-full bg-zinc-950 border-2 border-zinc-100 p-2 text-xs text-zinc-400 file:mr-4 file:bg-zinc-100 file:text-zinc-950 file:border-0 file:font-bold file:uppercase file:px-2"
+            className="w-full bg-zinc-950 border-1 border-zinc-600 p-2 text-xs text-zinc-400 file:mr-4 file:bg-zinc-100 file:text-zinc-950 file:border-0 file:font-bold file:uppercase file:px-2"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-zinc-100 text-zinc-950 font-black uppercase p-3 border-2 border-zinc-100 hover:bg-zinc-300 active:translate-x-1 active:translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-2"
+          className="w-full bg-zinc-100 text-zinc-950 font-black uppercase p-3 hover:bg-zinc-300 active:translate-x-1 active:translate-y-1 transition-all mt-2"
         >
           {loading ? 'Processando...' : 'Cadastrar Item'}
         </button>
@@ -169,7 +169,7 @@ export default function ItemForm({ onItemAdded, onClose }) {
         <button
           type="button"
           onClick={onClose}
-          className="w-full bg-rose-500 text-zinc-950 font-black uppercase p-3 border-2 border-zinc-100 hover:bg-zinc-300 active:translate-x-1 active:translate-y-1 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-2"
+          className="w-full bg-rose-500 text-zinc-950 font-black uppercase p-3 hover:bg-zinc-300 active:translate-x-1 active:translate-y-1 transition-all mt-2"
         >
           Cancelar
         </button>

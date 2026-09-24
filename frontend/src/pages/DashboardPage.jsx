@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDashboard } from "../api/users";
+import { getDashboard, getCurrentUser } from "../api/users";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
@@ -13,22 +13,27 @@ function DashboardPage() {
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   const { logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function loadDashboard() {
-      try {
-        const data = await getDashboard();
-        setDashboard(data);
-      } catch (err) {
-        setError("Não foi possível carregar o dashboard.");
-      } finally {
-        setIsLoading(false);
-      }
+  async function loadDashboard() {
+    try {
+      const [dashboardData, userData] = await Promise.all([
+        getDashboard(),
+        getCurrentUser(),
+      ]);
+      setDashboard(dashboardData);
+      setUser(userData);
+    } catch (err) {
+      setError("Não foi possível carregar o dashboard.");
+    } finally {
+      setIsLoading(false);
     }
-    loadDashboard();
+  }
+  loadDashboard();
   }, []);
 
   if (isLoading) {
@@ -72,9 +77,9 @@ function DashboardPage() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-mono p-6 md:p-10 space-y-8">
       {/* Header com Navegação */}
       <Navbar />
-      <header className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(244,244,245,1)] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <header className="border-1 border-zinc-600 p-6 bg-zinc-900 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl font-black text-orange-600 uppercase tracking-tight">Dashboard</h1>
+          <h1 className="text-4xl font-black text-orange-600 uppercase tracking-tight">Olá, {user.username}!</h1>
           <p className="text-xs text-zinc-400 uppercase mt-1 font-bold">Resumo Geral Financeiro</p>
         </div>
       </header>
@@ -82,7 +87,7 @@ function DashboardPage() {
       {/* Grid de Cards Superiores */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Card Saldo Atual */}
-        <div className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[6px_6px_0px_0px_rgba(244,244,245,1)]">
+        <div className="border-1 border-zinc-600 p-6 bg-zinc-900">
           <span className="text-xs font-black uppercase text-zinc-400 tracking-wider">
             Saldo Atual
           </span>
@@ -96,14 +101,14 @@ function DashboardPage() {
         </div>
 
         {/* Card Total de Ganhos */}
-        <div className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[6px_6px_0px_0px_rgba(244,244,245,1)]">
+        <div className="border-1 border-zinc-600 p-6 bg-zinc-900">
           <span className="text-xs font-black uppercase text-zinc-400 tracking-wider">
             Total de Ganhos
           </span>
           <p className="text-3xl font-black mt-3 text-emerald-400">
             + R$ {Number(dashboard?.["Total de ganhos"] ?? 0).toFixed(2)}
           </p>
-          <div className="mt-4 pt-3 border-t-2 border-zinc-800">
+          <div className="mt-4 pt-3 border-t-1 border-zinc-600">
             <span className="text-xs text-zinc-400 font-bold uppercase block">Maior Ganho:</span>
             {Object.entries(maiorGanho).map(([titulo, valor]) => (
               <p key={titulo} className="text-sm font-bold text-zinc-200 mt-1">
@@ -114,14 +119,14 @@ function DashboardPage() {
         </div>
 
         {/* Card Total de Gastos */}
-        <div className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[6px_6px_0px_0px_rgba(244,244,245,1)]">
+        <div className="border-1 border-zinc-600 p-6 bg-zinc-900">
           <span className="text-xs font-black uppercase text-zinc-400 tracking-wider">
             Total de Gastos
           </span>
           <p className="text-3xl font-black mt-3 text-rose-400">
             - R$ {Number(dashboard?.["Total de gastos"] ?? 0).toFixed(2)}
           </p>
-          <div className="mt-4 pt-3 border-t-2 border-zinc-800">
+          <div className="mt-4 pt-3 border-t-1 border-zinc-600">
             <span className="text-xs text-zinc-400 font-bold uppercase block">Maior Gasto:</span>
             {Object.entries(maiorGasto).map(([titulo, valor]) => (
               <p key={titulo} className="text-sm font-bold text-zinc-200 mt-1">
@@ -135,8 +140,8 @@ function DashboardPage() {
       {/* Seção de Resumos por Categoria + Gráficos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Bloco Resumo de Ganhos */}
-        <div className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[6px_6px_0px_0px_rgba(244,244,245,1)] space-y-6">
-          <h3 className="text-xl font-black uppercase border-b-4 border-zinc-100 pb-2 text-emerald-400">
+        <div className="border-1 border-zinc-600 p-6 bg-zinc-900 space-y-6">
+          <h3 className="text-xl font-black uppercase border-b-1 border-zinc-600 pb-2 text-emerald-400">
             Resumo de Ganhos por Categoria
           </h3>
 
@@ -144,7 +149,7 @@ function DashboardPage() {
             {Object.entries(resumoGanhos).map(([categoria, percentual]) => (
               <li
                 key={categoria}
-                className="flex justify-between items-center border-2 border-zinc-100 p-3 bg-zinc-950 font-bold"
+                className="flex justify-between items-center border-1 border-zinc-600 p-3 bg-zinc-950 font-bold"
               >
                 <span className="uppercase text-zinc-300">{categoria}</span>
                 <span className="text-emerald-400 font-black">{percentual}</span>
@@ -190,8 +195,8 @@ function DashboardPage() {
         </div>
 
         {/* Bloco Resumo de Gastos */}
-        <div className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[6px_6px_0px_0px_rgba(244,244,245,1)] space-y-6">
-          <h3 className="text-xl font-black uppercase border-b-4 border-zinc-100 pb-2 text-rose-400">
+        <div className="border-1 border-zinc-600 p-6 bg-zinc-900 space-y-6">
+          <h3 className="text-xl font-black uppercase border-b-1 border-zinc-600 pb-2 text-rose-400">
             Resumo de Gastos por Categoria
           </h3>
 
@@ -199,7 +204,7 @@ function DashboardPage() {
             {Object.entries(resumoGastos).map(([categoria, percentual]) => (
               <li
                 key={categoria}
-                className="flex justify-between items-center border-2 border-zinc-100 p-3 bg-zinc-950 font-bold"
+                className="flex justify-between items-center border-1 border-zinc-600 p-3 bg-zinc-950 font-bold"
               >
                 <span className="uppercase text-zinc-300">{categoria}</span>
                 <span className="text-rose-400 font-black">{percentual}</span>

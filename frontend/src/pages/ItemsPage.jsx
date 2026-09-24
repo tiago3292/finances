@@ -135,7 +135,7 @@ function ItemsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-zinc-950 text-zinc-100 font-mono p-8 flex items-center justify-center">
-        <div className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(244,244,245,1)] animate-pulse">
+        <div className="border-1 border-zinc-600 p-6 bg-zinc-900 animate-pulse">
           <p className="text-xl font-black uppercase">Carregando itens...</p>
         </div>
       </div>
@@ -146,7 +146,7 @@ function ItemsPage() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-mono p-6 md:p-10 space-y-8">
       {/* Topo com navegação */}
       <Navbar />
-      <header className="flex border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[8px_8px_0px_0px_rgba(244,244,245,1)] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <header className="flex border-1 border-zinc-600 p-6 bg-zinc-900 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-black uppercase text-orange-600 tracking-tight">Meus Itens</h1>
           <p className="text-xs text-zinc-400 uppercase mt-1 font-bold">Gestão e Registro de Lançamentos</p>
@@ -154,7 +154,7 @@ function ItemsPage() {
 
         <button
             onClick={() => setShowModal(true)}
-            className="bg-zinc-100 text-zinc-950 font-black uppercase px-4 py-2 border-2 border-zinc-100 hover:bg-zinc-300 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="bg-zinc-100 text-zinc-950 font-black uppercase px-4 py-2 hover:bg-zinc-300"
           >
             + Novo Registro
         </button>
@@ -223,7 +223,7 @@ function ItemsPage() {
       )}
 
       {/* Painel de Filtros */}
-      <div className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[6px_6px_0px_0px_rgba(244,244,245,1)] space-y-4">
+      <div className="border-1 border-zinc-600 p-6 bg-zinc-900 space-y-4">
         <h2 className="text-xs font-black uppercase text-zinc-400 tracking-wider">Filtrar Lançamentos</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
@@ -231,7 +231,7 @@ function ItemsPage() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="w-full bg-zinc-950 border-2 border-zinc-100 p-2 font-bold focus:outline-none uppercase"
+              className="w-full bg-zinc-950 border-1 border-zinc-600 p-2 font-bold focus:outline-none uppercase"
             >
               <option value="">Todas</option>
               {allCategories.map((cat) => (
@@ -246,7 +246,7 @@ function ItemsPage() {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full bg-zinc-950 border-2 border-zinc-100 p-2 font-bold focus:outline-none text-zinc-100"
+              className="w-full bg-zinc-950 border-1 border-zinc-600 p-2 font-bold focus:outline-none text-zinc-100"
             />
           </div>
 
@@ -256,7 +256,7 @@ function ItemsPage() {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full bg-zinc-950 border-2 border-zinc-100 p-2 font-bold focus:outline-none text-zinc-100"
+              className="w-full bg-zinc-950 border-1 border-zinc-600 p-2 font-bold focus:outline-none text-zinc-100"
             />
           </div>
         </div>
@@ -331,17 +331,17 @@ function TableSection({
   uploadingId,
 }) {
   return (
-    <div className="border-4 border-zinc-100 p-6 bg-zinc-900 shadow-[6px_6px_0px_0px_rgba(244,244,245,1)]">
+    <div className="border-1 border-zinc-600 p-6 bg-zinc-900">
       <h2 className={`text-xl font-black uppercase mb-4 ${accentColor}`}>{title}</h2>
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse border-2 border-zinc-100">
+        <table className="w-full text-left border-collapse border-1 border-zinc-600">
           <thead>
-            <tr className="bg-zinc-800 border-b-2 border-zinc-100 text-xs uppercase">
-              <th className="p-3 border-r-2 border-zinc-100">Título</th>
-              <th className="p-3 border-r-2 border-zinc-100">Categoria</th>
-              <th className="p-3 border-r-2 border-zinc-100">Valor</th>
-              <th className="p-3 border-r-2 border-zinc-100">Data</th>
-              <th className="p-3 border-r-2 border-zinc-100">Comprovante</th>
+            <tr className="bg-zinc-800 border-b-1 border-zinc-600 text-xs uppercase">
+              <th className="p-3 border-r-1 border-zinc-600">Título</th>
+              <th className="p-3 border-r-1 border-zinc-600">Categoria</th>
+              <th className="p-3 border-r-1 border-zinc-600">Valor</th>
+              <th className="p-3 border-r-1 border-zinc-600">Data</th>
+              <th className="p-3 border-r-1 border-zinc-600">Comprovante</th>
               <th className="p-3">Ações</th>
             </tr>
           </thead>
@@ -355,56 +355,56 @@ function TableSection({
             ) : (
               data.map((item) =>
                 editingId === item.id ? (
-                  <tr key={item.id} className="bg-zinc-800/80 border-b-2 border-zinc-100">
-                    <td className="p-2 border-r-2 border-zinc-100">
+                  <tr key={item.id} className="bg-zinc-800/80 border-b-1 border-zinc-600">
+                    <td className="p-2 border-r-1 border-zinc-600">
                       <input
                         type="text"
                         value={editTitle}
                         onChange={(e) => setEditTitle(e.target.value)}
-                        className="bg-zinc-950 border border-zinc-100 p-1 text-zinc-100 font-bold w-full"
+                        className="bg-zinc-950 border border-zinc-600 p-1 text-zinc-100 font-bold w-full"
                       />
                     </td>
-                    <td className="p-2 border-r-2 border-zinc-100 uppercase text-xs">{item.category}</td>
-                    <td className="p-2 border-r-2 border-zinc-100">
+                    <td className="p-2 border-r-1 border-zinc-600 uppercase text-xs">{item.category}</td>
+                    <td className="p-2 border-r-1 border-zinc-600">
                       <input
                         type="number"
                         step="0.01"
                         min="0.01"
                         value={editValue}
                         onChange={(e) => setEditValue(e.target.value)}
-                        className="bg-zinc-950 border border-zinc-100 p-1 text-zinc-100 font-bold w-full"
+                        className="bg-zinc-950 border border-zinc-600 p-1 text-zinc-100 font-bold w-full"
                       />
                     </td>
-                    <td className="p-2 border-r-2 border-zinc-100 text-xs">
+                    <td className="p-2 border-r-1 border-zinc-600 text-xs">
                       {item.created_at ? new Date(item.created_at).toLocaleDateString("pt-BR") : "-"}
                     </td>
-                    <td className="p-2 border-r-2 border-zinc-100 text-xs">-</td>
+                    <td className="p-2 border-r-1 border-zinc-600 text-xs">-</td>
                     <td className="p-2 space-x-2">
                       <button
                         onClick={() => handleUpdate(item.id)}
-                        className="bg-emerald-600 text-zinc-100 font-bold uppercase text-xs px-2 py-1 border border-zinc-100 hover:bg-emerald-500"
+                        className="bg-emerald-600 text-zinc-100 font-bold uppercase text-xs px-2 py-1 border border-zinc-600 hover:bg-emerald-500"
                       >
                         Salvar
                       </button>
                       <button
                         onClick={cancelEditing}
-                        className="bg-zinc-700 text-zinc-100 font-bold uppercase text-xs px-2 py-1 border border-zinc-100 hover:bg-zinc-600"
+                        className="bg-zinc-700 text-zinc-100 font-bold uppercase text-xs px-2 py-1 border border-zinc-600 hover:bg-zinc-600"
                       >
                         Cancelar
                       </button>
                     </td>
                   </tr>
                 ) : (
-                  <tr key={item.id} className="border-b-2 border-zinc-100 hover:bg-zinc-800/50">
-                    <td className="p-3 border-r-2 border-zinc-100 font-bold">{item.title}</td>
-                    <td className="p-3 border-r-2 border-zinc-100 uppercase text-xs">{item.category}</td>
-                    <td className={`p-3 border-r-2 border-zinc-100 font-black ${accentColor}`}>
+                  <tr key={item.id} className="border-b-1 border-zinc-600 hover:bg-zinc-800/50">
+                    <td className="p-3 border-r-1 border-zinc-600 font-bold">{item.title}</td>
+                    <td className="p-3 border-r-1 border-zinc-600 uppercase text-xs">{item.category}</td>
+                    <td className={`p-3 border-r-1 border-zinc-600 font-black ${accentColor}`}>
                       R$ {Number(item.value).toFixed(2)}
                     </td>
-                    <td className="p-3 border-r-2 border-zinc-100 text-xs">
+                    <td className="p-3 border-r-1 border-zinc-600 text-xs">
                       {item.created_at ? new Date(item.created_at).toLocaleDateString("pt-BR") : "-"}
                     </td>
-                    <td className="p-3 border-r-2 border-zinc-100 text-xs">
+                    <td className="p-3 border-r-1 border-zinc-600 text-xs">
                       {item.uploaded_file ? (
                         <div className="flex items-center space-x-2">
                           <span className="underline font-bold text-zinc-300">
@@ -433,13 +433,13 @@ function TableSection({
                     <td className="p-3 space-x-2">
                       <button
                         onClick={() => startEditing(item)}
-                        className="bg-zinc-800 text-zinc-100 font-bold uppercase text-xs px-2 py-1 border border-zinc-100 hover:bg-zinc-700"
+                        className="bg-zinc-800 text-zinc-100 font-bold uppercase text-xs px-2 py-1 border border-zinc-600 hover:bg-zinc-700"
                       >
                         Editar
                       </button>
                       <button
                         onClick={() => handleDelete(item.id)}
-                        className="bg-rose-600 text-zinc-100 font-bold uppercase text-xs px-2 py-1 border border-zinc-100 hover:bg-rose-500"
+                        className="bg-rose-600 text-zinc-100 font-bold uppercase text-xs px-2 py-1 border border-zinc-600 hover:bg-rose-500"
                       >
                         Excluir
                       </button>
