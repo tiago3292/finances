@@ -9,8 +9,8 @@ function RootNavigator() {
     return(
         <Stack screenOptions={{ headerShown: false }}>
             <Stack.Protected guard={isSignedIn}>
-                <Stack.Screen name="dashboard" />
                 <Stack.Screen name="index" />
+                <Stack.Screen name="itemsPage" />
                 <Stack.Screen name="new-item" />
             </Stack.Protected>
 
