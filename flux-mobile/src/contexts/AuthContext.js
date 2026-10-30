@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, useCallback } from "rea
 import { loginUser } from "../api/auth";
 import { saveToken, getToken, removeToken } from "../storage/token";
 import { setUnauthorizedHandler } from "../api/axios";
+import { clearItemsCache } from "../storage/cache";
 
 const AuthContext = createContext(null);
 
@@ -19,7 +20,10 @@ export function AuthProvider({ children }) {
     }, []);
 
     useEffect(() => {
-        setUnauthorizedHandler(() => setIsSignedIn(false));
+        setUnauthorizedHandler(() => {
+            clearItemsCache();
+            setIsSignedIn(false);
+        });
     }, []);
 
     async function signIn(username, password) {
@@ -30,6 +34,7 @@ export function AuthProvider({ children }) {
 
     const signOut = useCallback(async () => {
         await removeToken();
+        await clearItemsCache();
         setIsSignedIn(false);
     }, []);
 
